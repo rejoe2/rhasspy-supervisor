@@ -48,6 +48,12 @@ def main():
         help="Path to mosquitto binary (default: mosquitto)",
     )
     parser.add_argument(
+        "--mosquitto-config",
+        default=Path("~/.config/rhasspy/profiles").expanduser().("mosquitto.conf"),
+        help="Path to mosquitto config file (default: $HOME/.config/rhasspy/user_profiles)",
+    )
+
+    parser.add_argument(
         "--debug", action="store_true", help="Print DEBUG message to console"
     )
     args = parser.parse_args()
