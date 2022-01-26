@@ -23,6 +23,7 @@ def profile_to_conf(
     out_file: typing.TextIO,
     local_mqtt_port=12183,
     mosquitto_path="mosquitto",
+    mosquitto_config=Path("~/.config/rhasspy/profiles").expanduser().("mosquitto.conf"),
 ):
     """Generate supervisord conf from Rhasspy profile"""
 
@@ -51,7 +52,7 @@ def profile_to_conf(
         mqtt_port = local_mqtt_port
         mqtt_username = ""
         mqtt_password = ""
-        print_mqtt(out_file, mqtt_port=local_mqtt_port, mosquitto_path=mosquitto_path)
+        print_mqtt(out_file, mqtt_port=local_mqtt_port, mosquitto_path=mosquitto_path,mosquitto_config=mosquitto_config))
 
     # -------------------------------------------------------------------------
 
@@ -239,7 +240,7 @@ def write_boilerplate(out_file: typing.TextIO):
 
 def print_mqtt(out_file: typing.TextIO, mqtt_port: int, mosquitto_path="mosquitto"):
     """Print command for internal MQTT broker"""
-    mqtt_command = [mosquitto_path, "-p", str(mqtt_port)]
+    mqtt_command = [mosquitto_path, "-p", str(mqtt_port), "-c", str(mosquitto_config)]
 
     if mqtt_command:
         print("[program:mqtt]", file=out_file)
